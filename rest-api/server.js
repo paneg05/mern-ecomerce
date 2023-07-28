@@ -6,6 +6,7 @@ import  express  from 'express'
 import morgan from 'morgan'
 import connectDB from './config/db.js'
 import authRouts from './routs/authRouts.js'
+import cors from 'cors'
 
 
 const port = process.env.PORT || 8080
@@ -17,6 +18,7 @@ connectDB()
 const server = express()
 
 //middlewares
+server.use(cors())
 server.use(morgan('dev'))
 server.use(express.json())
 server.use(express.urlencoded({ extended: true }))
