@@ -4,9 +4,9 @@ import { Outlet } from "react-router-dom";
 import axios from "axios";
 import Spinner from "../Spinner";
 import { useLocation } from "react-router-dom";
-import { useNavigate, Navigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
-export default function PrivateRoute (){
+export default function AdminRoute (){
     const [ok,setOk] = useState(false)
     const [auth, setAuth] = useAuth()
 
@@ -14,10 +14,9 @@ export default function PrivateRoute (){
     const rout = location.pathname.split('/')
 
     
-    
     useEffect(()=>{
         const authCheck =async () =>{
-            const res = await axios.get(`${import.meta.env.VITE_API}/api/v1/auth/user-route`,)
+            const res = await axios.get(`${import.meta.env.VITE_API}/api/v1/auth/admin-route`,)
             if(res.data.ok){
                 setOk(true)
             }else{
@@ -33,5 +32,5 @@ export default function PrivateRoute (){
 
     
 
-    return ok ? <Outlet /> : <Spinner path="/"/>
+    return ok ? <Outlet /> : <Spinner path='/'/>
 }

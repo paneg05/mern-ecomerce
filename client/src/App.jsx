@@ -10,7 +10,13 @@ import Login from './pages/auth/Login'
 import Dashboard from './pages/user/Dashboard'
 import PrivateRoute from './components/Routs/Private'
 import ForgotPassword from './pages/auth/ForgotPassword'
-
+import AdminDashboard from './pages/admin/AdminDashboard'
+import AdminRoute from './components/Routs/AdminRoute'
+import CreateCategory from './pages/admin/CreateCategory'
+import CreateProduct from './pages/admin/CreateProduct'
+import Users from './pages/admin/Users'
+import Orders from './pages/user/Orders'
+import Profile from './pages/user/Profile'
 
 
 function App() {
@@ -31,7 +37,15 @@ function App() {
           // rotas protegidas
         }
         <Route path='/dashboard' element={<PrivateRoute/>}>
-          <Route path='user' element={<Dashboard/>} />
+          <Route path='user' element={<Dashboard />} />
+          <Route path='user/orders' element={<Orders />} />
+          <Route path='user/profile' element={<Profile/>} />
+        </Route>
+        <Route path='/dashboard' element={<AdminRoute/>}>
+          <Route path='admin' element={<AdminDashboard />} />
+          <Route path='admin/create-category' element={<CreateCategory />} />
+          <Route path='admin/create-product' element={<CreateProduct />} />
+          <Route path='admin/users' element={<Users/>} />
         </Route>
 
         

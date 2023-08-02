@@ -11,8 +11,7 @@ const Login = () => {
 
     const [email,setEmail] = useState('')
     const [password,setPassword]= useState('')
-    const {auth} = useAuth()
-    const setAuth = useAuth().setAuth
+    const [auth, setAuth] = useAuth()
 
     const navigate = useNavigate()
 

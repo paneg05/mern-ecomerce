@@ -4,9 +4,7 @@ import { useAuth } from '../context/auth';
 
 
 const HomePage = () => {
-  const userContext = useAuth()
-  const auth = userContext.auth
-  const setAuth = userContext.setAuth
+  const [auth, setAuth] = useAuth()
 
  
   return (
