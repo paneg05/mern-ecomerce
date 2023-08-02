@@ -11,6 +11,7 @@ const Register = () => {
     const [password,setPassword]= useState('')
     const [phone,setPhone] = useState('')
     const [address, setAdress] = useState('')
+    const [answer, setAnswer] = useState('')
     const navigate = useNavigate()
 
 
@@ -23,7 +24,8 @@ const Register = () => {
                 email,
                 password,
                 phone,
-                address
+                address,
+                answer
             })
             if(res && res.data.success){
                 toast.success(res.data.message)
@@ -104,7 +106,18 @@ const Register = () => {
                         required
                     />
                 </div>
-                
+                <div className="mb-3">
+                    <input 
+                        type="text"
+                        value={answer}
+                        className="form-control" 
+                        id="answer" 
+                        name="answer"
+                        placeholder="What is yout best friend name ?" 
+                        onChange={(e)=>setAnswer(e.target.value)}
+                        required
+                    />
+                </div>
                 <button type="submit" className="btn btn-primary">Submit</button>
             </form>
 

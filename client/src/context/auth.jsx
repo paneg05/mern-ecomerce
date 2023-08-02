@@ -1,6 +1,8 @@
 import { useState, useContext, createContext, useEffect } from "react";
 import axios from "axios";
 const AuthContext = createContext();
+
+// eslint-disable-next-line react/prop-types
 const AuthProvider = ({ children }) => {
   
   const [auth, setAuth] = useState({
@@ -9,8 +11,7 @@ const AuthProvider = ({ children }) => {
   });
 
   //default axios
-  axios.defaults.headers.common['Authorization'] = auth?.token
-
+  axios.defaults.headers.common['Authorization'] = `Bearer ${auth?.token}`
   useEffect(()=>{
     const data = localStorage.getItem('auth')
     if(data){
