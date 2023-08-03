@@ -6,6 +6,7 @@ import  express  from 'express'
 import morgan from 'morgan'
 import connectDB from './config/db.js'
 import authRouts from './routs/authRouts.js'
+import categoryRouts from './routs/categoryRouts.js'
 import cors from 'cors'
 
 
@@ -26,6 +27,7 @@ server.use(express.urlencoded({ extended: true }))
 
 //routs
 server.use('/api/v1/auth', authRouts)
+server.use('/api/v1/category', categoryRouts)
 
 // rest api
 
@@ -36,5 +38,5 @@ server.get('/',(req,res)=>{
 })
 
 server.listen(port,()=>{
-    console.log(`\n servidor rodando em: http://localhost:${port} em ${process.env.DEV_MODE} mode`.bgCyan.white)
+    console.log(`servidor rodando em: http://localhost:${port} em ${process.env.DEV_MODE} mode`.bgCyan.white)
 })
