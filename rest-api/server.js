@@ -7,6 +7,7 @@ import morgan from 'morgan'
 import connectDB from './config/db.js'
 import authRouts from './routs/authRouts.js'
 import categoryRouts from './routs/categoryRouts.js'
+import productRoutes from './routs/productRoutes.js'
 import cors from 'cors'
 
 
@@ -28,6 +29,7 @@ server.use(express.urlencoded({ extended: true }))
 //routs
 server.use('/api/v1/auth', authRouts)
 server.use('/api/v1/category', categoryRouts)
+server.use('/api/v1/products', productRoutes)
 
 // rest api
 

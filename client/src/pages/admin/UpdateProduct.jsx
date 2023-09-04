@@ -7,9 +7,8 @@ import { Select } from "antd"
 import { useNavigate } from "react-router-dom"
 const { Option } = Select
 
+const UpdateProduct = () => {
 
-
-const CreateProduct = () => {
     const navigate = useNavigate()
     const [categories, setCategories] = useState([])
     const [category, setCategory] = useState({})
@@ -22,56 +21,11 @@ const CreateProduct = () => {
     
     const apiUri = `${import.meta.env.VITE_API}/api/v1/`
 
-    //get all category
-    const getAllCategories = async () => {
-        try {
-            const allCategoriesUri = `${apiUri}category/get-categories`
-            
-            const {data} = await axios.get(allCategoriesUri)
-            
-            if (data?.success) {
-                setCategories(data?.category)
-            } 
-        } catch (error) {
-            console.error(error);
-            toast.error('Something went wrong in getting category')
-        }
 
-    }
 
-        useEffect(() => {
-        getAllCategories()
 
-    },[])
-
-    const handleCreate = async (e) => {
-        e.preventDefault()
-        try {
-            const productData = new FormData()
-            productData.append('name', name)
-            productData.append('description', description)
-            productData.append('price', price)
-            productData.append('quantity', quantity)
-            productData.append('shipping', shipping)
-            productData.append('photo', photo)
-            productData.append('category', category)
-            
-            const { data } = await axios.post(`${apiUri}products/create-product`, productData)
-
-            if (data?.success) {
-                toast.success('Product Created Successfully')
-                navigate('/dashboard/admin/products')
-            } else {
-                alert('erro')
-            }
-        } catch (err) {
-            console.error(err);
-            toast.error('something went create product')
-        }
-    }
-
-return (
-    <Layout title=' Dashboard - Create product'>
+  return (
+        <Layout title=' Dashboard - Create product'>
         <div className="container-fluid m-3 p-3">
             <div className="row">
                 <div className="col-md-3">
@@ -199,4 +153,4 @@ return (
   )
 }
 
-export default CreateProduct
+export default UpdateProduct

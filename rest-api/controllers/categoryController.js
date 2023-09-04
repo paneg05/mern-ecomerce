@@ -11,7 +11,7 @@ export const createCategoryController = async (req,res) => {
         const existingCategory = await categoryModel.findOne({ name })
         if (existingCategory) {
             return res.status(200).send({
-                success: true,
+                success: false,
                 message: 'Category already exists'
             })
         }
@@ -19,6 +19,7 @@ export const createCategoryController = async (req,res) => {
         res.status(200).send({
             success: true,
             message: 'New category created',
+            name,
             category
         })
 
@@ -136,3 +137,4 @@ export const deleteCategoryController = async (req,res) => {
         })
     }
 }
+
