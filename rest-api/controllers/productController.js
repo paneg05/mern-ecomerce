@@ -135,6 +135,7 @@ export const productPhotoController = async (req, res) => {
 
 export const deleteProductController = async (req, res) => {
     try {
+        console.log('chegou aqui')
         await productModel.findByIdAndDelete(req.params.pid).select('-photo')
         res.status(200).send({
             success: true,
@@ -153,7 +154,8 @@ export const deleteProductController = async (req, res) => {
     //update product
 export const updateProductController =async (req, res) => {
     try {
-        const { name, slug, description, price, category, quantity, shipping } = req.fields
+        const { name, slug, description, price, quantity, shipping } = req.fields
+        const category = req.fields.category
         const { photo } = req.files
         //validation
         switch (true) {
@@ -162,10 +164,7 @@ export const updateProductController =async (req, res) => {
                         error:'name is Required'
                 })
                 break
-            case !photo || photo.size > 1000000:
-                return res.status(500).send({
-                        error:'photo is Required and should be less then 1mb'
-                })
+
                 break
             case !description:
                 return res.status(500).send({
@@ -189,12 +188,14 @@ export const updateProductController =async (req, res) => {
                 break
         }
         
+
         if (photo) {
             photo.data = fs.readFileSync(photo.path)
             photo.contentType = photo.type
+            
         }
         
-                    
+
         const products = await productModel.findByIdAndUpdate(req.params.pid,
             {
                 ...req.fields,
@@ -205,7 +206,7 @@ export const updateProductController =async (req, res) => {
             }
         )
 
-        console.log('chegou aqui')
+        
         
         res.status(200).send({
             success: true,
@@ -213,6 +214,6 @@ export const updateProductController =async (req, res) => {
             products
         })
     } catch (error) {
-        
+        console.error(error)
     }
 }

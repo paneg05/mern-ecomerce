@@ -41,7 +41,7 @@ const Products = () => {
                                 return (
                                     <Link
                                         key={el._id}
-                                        to={`/dashboard/admin/product/${el.slug}`}
+                                        to={`/dashboard/admin/update-product/${el.slug}`}
                                         className="product-link"
                                     >
                                         <div  className="card m-2" style={{width: '18rem'}}>

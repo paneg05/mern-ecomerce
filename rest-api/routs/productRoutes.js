@@ -21,6 +21,7 @@ router.post('/create-product',
     productController
 )
 
+//update product
 router.put('/update-product/:pid',
     requireSignIn,
     isAdmin,

@@ -4,24 +4,112 @@ import { toast } from "react-hot-toast"
 import { useState, useEffect } from "react"
 import axios from "axios"
 import { Select } from "antd"
-import { useNavigate } from "react-router-dom"
+import { useNavigate,useParams } from "react-router-dom"
 const { Option } = Select
 
 const UpdateProduct = () => {
 
-    const navigate = useNavigate()
+  const navigate = useNavigate()
+  const params = useParams()
     const [categories, setCategories] = useState([])
-    const [category, setCategory] = useState({})
+    const [category, setCategory] = useState('')
     const [photo, setphoto] = useState('')
     const [name, setName] = useState('')
     const [description, setDescription] = useState('')
     const [price, setPrice] = useState('')
     const [quantity, setQuantity] = useState('')
     const [shipping, setShipping] = useState('')
-    
-    const apiUri = `${import.meta.env.VITE_API}/api/v1/`
+    const [pId, setPId] = useState('')
+  const apiUri = `${import.meta.env.VITE_API}/api/v1/`
 
 
+
+  const getSingleProduct = async () => {
+    try {
+        const { data } = await axios.get(`${apiUri}products/get-product/${params.slug}`)
+        setName(data.product.name)
+        setDescription(data.product.description)
+        setPrice(data.product.price)
+        setShipping(data.product.shipping)
+        setQuantity(data.product.quantity)
+        setCategory(data.product.category)
+        setPId(data.product._id)
+
+    } catch (e) {
+        console.error(e)
+        toast.error('something went wrong')
+    }
+  }
+  
+  const getAllCategories = async () => {
+        try {
+            const allCategoriesUri = `${apiUri}category/get-categories`
+            
+            const {data} = await axios.get(allCategoriesUri)
+            
+            if (data?.success) {
+                setCategories(data?.category)
+            } 
+        } catch (error) {
+            console.error(error);
+            toast.error('Something went wrong in getting category')
+        }
+
+    }
+
+        useEffect(() => {
+        getAllCategories()
+        getSingleProduct()
+    },[])
+
+
+  const handleUpdate = async (e) => {
+      e.preventDefault()
+        
+        try {
+            const productData = new FormData()
+            productData.append('name', name)
+            productData.append('description', description)
+            productData.append('price', price)
+            productData.append('quantity', quantity)
+            productData.append('shipping', shipping)
+            photo && productData.append('photo', photo)
+            productData.append('category', category._id)
+
+
+            const { data } = await axios.put(`${apiUri}products/update-product/${pId}`, productData)
+           
+            if (data?.success) {
+                toast.success('Product Updated Successfully')
+                navigate('/dashboard/admin/products')
+            } else {
+                alert('erro')
+            }
+        } catch (err) {
+            console.error(err);
+            toast.error('something went wrong')
+        }
+    }
+
+// delete product
+    const handleDelete = async (e) => {
+        e.preventDefault()
+        try {
+            let answer = window.prompt(' are you sure want to delete this product ?')
+            if (!answer) return
+            
+            console.log(`${apiUri}product/${pId}`)
+            const { data } = await axios.delete(`${apiUri}products/product/${pId}`)
+            if (data) {
+                toast.success('product deleted successfully')
+                navigate('/dashboard/admin/products')
+            }
+        } catch (err) {
+            console.error(err)
+            toast.error('something went wrong')
+        }
+        
+    }
 
 
   return (
@@ -32,7 +120,7 @@ const UpdateProduct = () => {
                     <AdminMenu/>
                 </div>
                 <div className="col-md-9">
-                    <h1>Create product</h1>
+                    <h1>Update product</h1>
                     <div className="n-1 w-75">
                         <Select
                             bordered={false}
@@ -40,17 +128,22 @@ const UpdateProduct = () => {
                             size="large"
                             showSearch={true}
                             className="form-select mb-3"
-                            onChange={(value) => {
-                                setCategory(value)
-                            }}
-                        >
+                              onChange={(e) => {
+
+                                  setCategory(JSON.parse(e))
+                              }}
+                              value={JSON.stringify(category)}
+                             
+                              
+                          >
+                              
                             {
                                 categories?.map((el) => {
 
                                     return (
                                         <Option
                                             key={el._id}
-                                            value={el._id}
+                                            value={JSON.stringify(el)}
                                         >
                                             {el.name}
                                         </Option>
@@ -72,7 +165,7 @@ const UpdateProduct = () => {
                             </label>
                         </div>
                         <div className="mb-3">
-                            {photo && (
+                            {photo ? (
                                 <div className="text-center">
                                     <img
                                         src={URL.createObjectURL(photo)}
@@ -81,7 +174,18 @@ const UpdateProduct = () => {
                                         className="img img-responsive"
                                     />
                                 </div>
-                            )}
+                              ) :
+                                  (
+                                      <div className="text-center">
+                                            <img
+                                                src={`${apiUri}products/product-photo/${pId}`}
+                                                alt="Product-Photo"
+                                                height='200px'
+                                                className="img img-responsive"
+                                            />
+                                        </div>
+                                  )
+                            }
                         </div>
                         <div className="mb-3">
                             <input
@@ -129,7 +233,8 @@ const UpdateProduct = () => {
                                 className="form-select mb-3"
                                 onChange={(value) => {
                                     setShipping(value)
-                                }}
+                                  }}
+                                  value={shipping?'1':'0'}
                             >
                                 <Option value='0'>No</Option>
                                 <Option value='1'>yes</Option>
@@ -138,9 +243,17 @@ const UpdateProduct = () => {
                         <div className="mb-3">
                             <button
                                 className="btn btn-primary col-md-12"
-                                onClick={handleCreate}
+                                onClick={handleUpdate}
                             >
-                                CREATE PRODUCT
+                                UPDATE PRODUCT
+                            </button>
+                        </div>
+                        <div className="mb-3">
+                            <button
+                                className="btn btn-danger col-md-12"
+                                onClick={handleDelete}
+                            >
+                                DELETE PRODUCT
                             </button>
                         </div>
                         
