@@ -7,13 +7,15 @@ import 'antd/dist/reset.css'
 import './index.css'
 
 import { AuthProvider } from './context/auth.jsx'
+import { SearchProvider } from "./context/search.jsx";
 
-ReactDOM.createRoot(document.getElementById('root')).render(
-  
-  <AuthProvider>
-    <BrowserRouter>
-      <Toaster />
-      <App />
-    </BrowserRouter>
-  </AuthProvider>
-)
+ReactDOM.createRoot(document.getElementById("root")).render(
+	<AuthProvider>
+		<SearchProvider>
+			<BrowserRouter>
+				<Toaster />
+				<App />
+			</BrowserRouter>
+		</SearchProvider>
+	</AuthProvider>
+);
