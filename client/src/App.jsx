@@ -21,14 +21,14 @@ import Products from './pages/admin/Products'
 import UpdateProduct from './pages/admin/UpdateProduct'
 import Search from "./pages/Search";
 import ProductDetails from "./pages/ProductDetails";
-
+import Categories from "./pages/categories";
 
 function App() {
-
-  return (
+	return (
 		<>
 			<Routes>
 				<Route path="/" element={<HomePage />} />
+				<Route path="/categories" element={<Categories />} />
 				<Route path="/product/:slug" element={<ProductDetails />} />
 				<Route path="/search" element={<Search />} />
 				<Route path="/contact" element={<Contact />} />
@@ -67,7 +67,7 @@ function App() {
 				<Route path="*" element={<Pagenotfound />} />
 			</Routes>
 		</>
-  );
+	);
 }
 
 export default App

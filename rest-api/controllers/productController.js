@@ -114,7 +114,14 @@ export const getSingleProductController = async (req, res) => {
 
 //get photo
 export const productPhotoController = async (req, res) => {
+
 	try {
+		if (req?.params?.pid == "undefined") {
+			return res.status(404).send({
+				success: false,
+				message: "Invalid product id",
+			});
+		}	
 		const product = await productModel
 			.findById(req.params.pid)
 			.select("photo");
