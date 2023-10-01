@@ -9,7 +9,6 @@ const CategoryProduct = () => {
 
 	const [products, setProducts] = useState([]);
 	const [category, setCategory] = useState([]);
-	const test = false;
 	const params = useParams();
 
 	useEffect(() => {
