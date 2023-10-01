@@ -1,6 +1,7 @@
 import slugify from "slugify";
 import productModel from "../models/productModel.js";
 import fs from "fs";
+import categoryModel from "./../models/categoryModel.js";
 
 export const productController = async (req, res) => {
 	try {
@@ -114,14 +115,13 @@ export const getSingleProductController = async (req, res) => {
 
 //get photo
 export const productPhotoController = async (req, res) => {
-
 	try {
 		if (req?.params?.pid == "undefined") {
 			return res.status(404).send({
 				success: false,
 				message: "Invalid product id",
 			});
-		}	
+		}
 		const product = await productModel
 			.findById(req.params.pid)
 			.select("photo");
@@ -328,6 +328,30 @@ export const relatedProductsController = async (req, res) => {
 			success: false,
 			message: "Error while geting similar products",
 			error,
+		});
+	}
+};
+
+export const productCategoryController = async (req, res) => {
+	try {
+		const category = await categoryModel.findOne({
+			slug: req.params?.slug,
+		});
+		const products = await productModel
+			.find({ category })
+			.select("-photo")
+			.populate("category");
+		res.status(200).send({
+			success: true,
+			category,
+			products,
+		});
+	} catch (error) {
+		console.error(error);
+		res.status(500).send({
+			success: false,
+			error,
+			message: "Error while Getting products",
 		});
 	}
 };
