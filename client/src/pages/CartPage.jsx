@@ -99,6 +99,7 @@ const CartPage = () => {
 						<p>Total | Checkout | payment</p>
 						<hr />
 						<h4>Total : {totalPrice()}</h4>
+						{auth?.user?.address}
 					</div>
 				</div>
 			</div>
